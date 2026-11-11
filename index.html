@@ -28,7 +28,7 @@ button.p{background:var(--ac);border-color:var(--ac);color:#fff}
 .pg h2{font:700 20px Arial,sans-serif;text-align:center;margin:0 0 14px}
 .hd{display:flex;gap:14px;margin-bottom:12px}
 .bx{border:1.5px solid #000;border-radius:10px;padding:8px 12px;flex:1;font-size:12px}
-.bx table td{padding:1px 6px 1px 0;font:700 12px Arial,sans-serif}
+.bx table td{padding:4px 0;font:700 13px Arial,sans-serif;letter-spacing:.6px}.bx table td:nth-child(1){width:128px}.bx table td:nth-child(2){width:30px}
 .th,.rw{display:grid;grid-template-columns:76px 1fr 50px 140px 130px;column-gap:0}.rw>div,.th>div{padding:3px 6px}.th>div{white-space:nowrap}.th>div+div{border-left:1.5px solid #000}
 .th{border:1.5px solid #000;border-radius:8px;font:700 13px Arial,sans-serif;padding:0;margin:10px 0 0;text-align:center}
 .rw{padding:0 1.5px;white-space:pre-wrap}
@@ -84,7 +84,7 @@ rows.push({d:[x.t||"",x.k||"",fmt(n)+(x.j=="DB"?" DB":""),sd,x.r||""],l:Math.max
 var pages=[],cur=[],u=0;rows.forEach(function(r){if(u+r.l>cap&&cur.length){pages.push(cur);cur=[];u=0}cur.push(r);u+=r.l});if(cur.length)pages.push(cur);
 var out="",tot=pages.length;var cn=g("catatan").trim().split("\n").filter(Boolean);var cat=cn.length?'<div class="bx" style="font:10px Arial,sans-serif;margin-bottom:6px"><div style="margin-bottom:3px">CATATAN:</div><ul style="margin:0;padding-left:14px;columns:2;column-gap:24px">'+cn.map(function(l){return "<li>"+esc(l)+"</li>"}).join("")+'</ul></div>':"";
 pages.forEach(function(p,pi){var al=esc(g("alamat")).replace(/\n/g,"<br>");
-out+='<div class="pg"><div style="position:relative;display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:4px">'+(S.logo?'<img src="'+S.logo+'" style="position:absolute;left:0;top:0;max-height:50px;max-width:130px">':'')+'<h2 style="margin:0">'+esc(g("judul"))+'</h2></div><div style="font:700 10px Arial,sans-serif;margin-bottom:6px">'+esc(g("usaha"))+'</div><div class="hd"><div class="bx"><b>'+esc(g("nama"))+'</b><br>'+al+'</div><div class="bx"><table><tr><td>NO. REKENING</td><td>: '+esc(g("norek"))+'</td></tr><tr><td>HALAMAN</td><td>: '+(pi+1)+' / '+tot+'</td></tr><tr><td>PERIODE</td><td>: '+esc(g("periode"))+'</td></tr><tr><td>MATA UANG</td><td>: '+esc(g("mata"))+'</td></tr></table></div></div>'+cat+'<div class="th"><div>TANGGAL</div><div>KETERANGAN</div><div>CBG</div><div>MUTASI</div><div>SALDO</div></div>'+p.map(function(r){return r.h}).join("");
+out+='<div class="pg"><div style="position:relative;display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:4px">'+(S.logo?'<img src="'+S.logo+'" style="position:absolute;left:0;top:0;max-height:50px;max-width:130px">':'')+'<h2 style="margin:0">'+esc(g("judul"))+'</h2></div><div style="font:700 10px Arial,sans-serif;margin-bottom:6px">'+esc(g("usaha"))+'</div><div class="hd"><div class="bx"><b>'+esc(g("nama"))+'</b><br>'+al+'</div><div class="bx"><table><tr><td>NO. REKENING</td><td>:</td><td>'+esc(g("norek"))+'</td></tr><tr><td>HALAMAN</td><td>:</td><td>'+(pi+1)+'/'+tot+'</td></tr><tr><td>PERIODE</td><td>:</td><td>'+esc(g("periode"))+'</td></tr><tr><td>MATA UANG</td><td>:</td><td>'+esc(g("mata"))+'</td></tr></table></div></div>'+cat+'<div class="th"><div>TANGGAL</div><div>KETERANGAN</div><div>CBG</div><div>MUTASI</div><div>SALDO</div></div>'+p.map(function(r){return r.h}).join("");
 if(pi<tot-1)out+='<div style="position:absolute;right:44px;bottom:26px;font-style:italic">Bersambung ke Halaman berikut</div>';
 else out+='<div class="sum"><div><span>SALDO AWAL</span><span>:</span><span class="n">'+fmt(awal)+'</span></div><div><span>MUTASI CR</span><span>:</span><span class="n">'+fmt(cr)+'</span><span class="n">'+ncr+'</span></div><div><span>MUTASI DB</span><span>:</span><span class="n">'+fmt(db)+'</span><span class="n">'+ndb+'</span></div><div><span>SALDO AKHIR</span><span>:</span><span class="n">'+fmt(saldo)+'</span></div></div>';
 out+='<div class="ft"><span>Dokumen internal, bukan dokumen resmi bank</span></div></div>'});
@@ -100,7 +100,7 @@ d.setFontSize(8);d.text(g("usaha"),33,72);
 d.setLineWidth(1);d.roundedRect(33,78,270,86,7,7);d.roundedRect(313,78,249,86,7,7);
 d.setFontSize(9);d.setFont("courier","bold");d.text(g("nama"),43,94);d.setFont("courier","bold");
 g("alamat").split("\n").slice(0,5).forEach(function(l,i){d.text(l,43,106+12*i)});
-d.setFont("helvetica","bold");[["NO. REKENING",g("norek")],["HALAMAN",(pi+1)+" / "+tot],["PERIODE",g("periode")],["MATA UANG",g("mata")]].forEach(function(r,i){d.text(r[0],323,98+i*17);d.text(": "+r[1],410,98+i*17)});
+d.setFont("helvetica","bold");d.setFontSize(10);[["NO. REKENING",g("norek")],["HALAMAN",(pi+1)+"/"+tot],["PERIODE",g("periode")],["MATA UANG",g("mata")]].forEach(function(r,i){d.text(r[0],323,98+i*17);d.text(":",392,98+i*17);d.text(r[1],410,98+i*17)});
 var cl=g("catatan").trim().split("\n").filter(Boolean),oy=0;
 if(cl.length){d.setFont("helvetica","normal");d.setFontSize(7.5);var its=cl.map(function(l){return d.splitTextToSize("\u2022 "+l,240)}),hf=Math.ceil(its.length/2),cb=196;
 [[its.slice(0,hf),43],[its.slice(hf),305]].forEach(function(c){var yy=196;c[0].forEach(function(ls){ls.forEach(function(t){d.text(t,c[1],yy);yy+=9.5})});if(yy>cb)cb=yy});
