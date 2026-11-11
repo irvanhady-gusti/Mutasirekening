@@ -70,7 +70,7 @@ ids.forEach(function(i){if(S.h[i]!=null)document.getElementById(i).value=S.h[i]}
 function sv(){ids.forEach(function(i){S.h[i]=document.getElementById(i).value});try{localStorage.setItem("lm1",JSON.stringify(S))}catch(e){}}
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
 function fmt(n){return n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function list(){var h="";S.tx.forEach(function(x,i){h+='<div class="tx"><div><label>Tanggal</label><input value="'+esc(x.t)+'" placeholder="01/06" oninput="up('+i+',\'t\',this.value)"></div><div><label>Jenis</label><select onchange="up('+i+',\'j\',this.value)"><option'+(x.j=="CR"?" selected":"")+'>CR</option><option'+(x.j=="DB"?" selected":"")+'>DB</option></select></div><div><label>Nominal</label><input type="number" step="0.01" value="'+esc(x.n)+'" oninput="up('+i+',\'n\',this.value)"></div><div><label>&nbsp;</label><button onclick="del('+i+')">Hapus</button></div><div class="k kk"><div><label>Keterangan</label><input value="'+esc(x.k)+'" placeholder="TRSF E-BANKING DB" oninput="up('+i+',\'k\',this.value)"></div><div><label>Rincian (satu baris satu rincian)</label><textarea oninput="up('+i+',\'r\',this.value)">'+esc(x.r||"")+'</textarea></div></div></div>'});
+function list(){var h="";S.tx.forEach(function(x,i){h+='<div class="tx"><div><label>Tanggal</label><input value="'+esc(x.t)+'" placeholder="01/06" oninput="up('+i+',\'t\',this.value)"></div><div><label>Jenis</label><select onchange="up('+i+',\'j\',this.value)"><option'+(x.j=="CR"?" selected":"")+'>CR</option><option'+(x.j=="DB"?" selected":"")+'>DB</option></select></div><div><label>Nominal</label><input type="number" step="0.01" value="'+esc(x.n)+'" oninput="up('+i+',\'n\',this.value)"></div><div><label>&nbsp;</label><button onclick="del('+i+')">Hapus</button></div><div class="k kk"><div><label>Keterangan</label><input value="'+esc(x.k)+'" placeholder="TRSF E-BANKING DB" oninput="up('+i+',\'k\',this.value)">'+chips(i)+'</div><div><label>Rincian (satu baris satu rincian)</label><textarea oninput="up('+i+',\'r\',this.value)">'+esc(x.r||"")+'</textarea></div></div></div>'});
 document.getElementById("list").innerHTML=h}
 function up(i,f,v){S.tx[i][f]=v;draw()}
 function add(){S.tx.push({t:"",k:"",j:"DB",n:""});list();draw()}
@@ -131,6 +131,9 @@ a.forEach(function(x,i){h+='<div style="display:flex;gap:8px;align-items:center;
 document.getElementById("arsip").innerHTML=h}
 function bukaArsip(i){var x=(S.arsip||[])[i];if(!x)return;ids.forEach(function(k){if(x.h[k]!=null)document.getElementById(k).value=x.h[k]});S.tx=JSON.parse(JSON.stringify(x.tx));list();draw()}
 function hapusArsip(i){(S.arsip||[]).splice(i,1);sv();arsipList()}
+var QK=["TARIKAN ATM","BI-FAST CR","BIAYA ADM","SWITCHING DB"];
+function chips(i){return '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+QK.map(function(q,n){return '<button type="button" style="padding:3px 8px;font-size:12px" onclick="setK('+i+','+n+')">'+q+'</button>'}).join("")+'</div>'}
+function setK(i,n){S.tx[i].k=QK[n];list();draw()}
 function setLogo(f){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/im.width,120/im.height),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.logo=c.toDataURL("image/png");draw()};im.src=r.result};r.readAsDataURL(f)}
 function noLogo(){S.logo="";document.getElementById("lg").value="";draw()}
 ld();list();draw();arsipList();
