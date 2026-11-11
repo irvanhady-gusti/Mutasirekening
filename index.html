@@ -25,7 +25,7 @@ button.p{background:var(--ac);border-color:var(--ac);color:#fff}
 .bar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 .note{font-size:12px;color:var(--mut)}
 #prev{display:flex;flex-direction:column;gap:14px;align-items:center;overflow-x:auto}
-.pg{background:#fff;color:#000;width:794px;min-height:1123px;padding:40px 44px;font:700 12.5px/1.35 "DejaVu Sans Mono","Courier New",monospace;position:relative;box-shadow:0 1px 6px rgba(0,0,0,.25);flex:none}
+.pg{background:#fff;color:#000;width:794px;min-height:1123px;padding:40px 44px;font:700 12.5px/1.35 DM Sans,Arial,sans-serif;font-variant-numeric:tabular-nums;position:relative;box-shadow:0 1px 6px rgba(0,0,0,.25);flex:none}
 .pg h2{font:800 20px DM Sans,Arial,sans-serif;text-align:center;margin:0 0 14px}
 .hd{display:flex;gap:14px;margin-bottom:12px}
 .bx{border:1.5px solid #000;border-radius:10px;padding:8px 12px;flex:1;font:800 12px DM Sans,Arial,sans-serif}
@@ -107,9 +107,9 @@ if(cl.length){d.setFont("helvetica","normal");d.setFontSize(7.5);var its=cl.map(
 [[its.slice(0,hf),43],[its.slice(hf),305]].forEach(function(c){var yy=196;c[0].forEach(function(ls){ls.forEach(function(t){d.text(t,c[1],yy);yy+=9.5})});if(yy>cb)cb=yy});
 d.setFont("helvetica","bold");d.setFontSize(8);d.text("CATATAN:",43,184);var h=cb-172+2;d.roundedRect(33,172,529,h,6,6);oy=h+2}
 d.setFont("helvetica","bold");d.roundedRect(33,176+oy,529,22,6,6);d.setFontSize(10);d.text("TANGGAL",61,191+oy,{align:"center"});d.text("KETERANGAN",195,191+oy,{align:"center"});d.text("CBG",325,191+oy,{align:"center"});d.text("MUTASI",405,191+oy,{align:"center"});d.text("SALDO",508,191+oy,{align:"center"});
-d.setFont("courier","bold");d.setFontSize(9);var y=218+oy;
+d.setFont("helvetica","bold");d.setFontSize(9);var y=218+oy;
 p.forEach(function(r){d.text(r.d[0],40,y);d.text(r.d[1],95,y);(r.d[4]||"").split("\n").forEach(function(l,i){d.text(l,192,y+i*LH)});d.text(r.d[2],450,y,{align:"right"});d.text(r.d[3],555,y,{align:"right"});y+=r.l*LH+3});d.setLineWidth(1);[90,300,350,455].forEach(function(x){d.line(x,176+oy,x,198+oy)});
-if(pi<tot-1){d.setFont("courier","bolditalic");d.text("Bersambung ke Halaman berikut",562,812,{align:"right"})}
+if(pi<tot-1){d.setFont("helvetica","bolditalic");d.text("Bersambung ke Halaman berikut",562,812,{align:"right"})}
 else{y+=16;var s=[["SALDO AWAL",M.awal,""],["MUTASI CR",M.cr,M.ncr],["MUTASI DB",M.db,M.ndb],["SALDO AKHIR",M.saldo,""]];s.forEach(function(r,i){d.text(r[0],150,y+i*LH);d.text(":",218,y+i*LH);d.text(fmt(r[1]),350,y+i*LH,{align:"right"});d.text(String(r[2]),385,y+i*LH,{align:"right"})})}
 d.setFont("helvetica","normal");d.setFontSize(8);d.text("Dokumen internal, bukan dokumen resmi bank",33,812);});
 try{var dl=await claude.use("downloads");if(!dl){st.textContent="Unduh tidak tersedia di tampilan ini. Coba buka artifact langsung di claude.ai.";return}
