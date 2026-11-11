@@ -2,7 +2,7 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Laporan Mutasi Rekening</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f5f7;--card:#fff;--tx:#1b1f24;--mut:#667085;--bd:#d0d5dd;--ac:#1d4ed8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--card:#1d2127;--tx:#e8eaed;--mut:#9aa3ae;--bd:#363c45;--ac:#6b9bff}}
@@ -83,7 +83,7 @@ var nx=S.tx[i+1],last=!nx||nx.t!=x.t;var ls=(x.r||"").split("\n");var det=ls.sli
 var sd=last?fmt(saldo):"";
 rows.push({d:[x.t||"",x.k||"",fmt(n)+(x.j=="DB"?" DB":""),sd,x.r||""],l:Math.max(1,ls.length),h:'<div class="rw"><div>'+esc(x.t)+'</div><div class="kt"><span>'+esc(x.k||"")+'</span><span>'+esc(x.r||"")+'</span></div><div></div><div class="n">'+fmt(n)+(x.j=="DB"?" DB":"")+'</div><div class="n">'+sd+'</div></div>'})});
 var pages=[],cur=[],u=0;rows.forEach(function(r){if(u+r.l>cap&&cur.length){pages.push(cur);cur=[];u=0}cur.push(r);u+=r.l});if(cur.length)pages.push(cur);
-var out="",tot=pages.length;var cn=g("catatan").trim().split("\n").filter(Boolean);var cat=cn.length?'<div class="bx" style="font:700 10px DM Sans,Arial,sans-serif;margin-bottom:6px"><div style="margin-bottom:3px">CATATAN:</div><ul style="margin:0;padding-left:14px;columns:2;column-gap:24px">'+cn.map(function(l){return "<li>"+esc(l)+"</li>"}).join("")+'</ul></div>':"";
+var out="",tot=pages.length;var cn=g("catatan").trim().split("\n").filter(Boolean);var cat=cn.length?'<div class="bx" style="font:400 10px DM Sans,Arial,sans-serif;margin-bottom:6px"><div style="margin-bottom:3px">CATATAN:</div><ul style="margin:0;padding-left:14px;columns:2;column-gap:24px">'+cn.map(function(l){return "<li>"+esc(l)+"</li>"}).join("")+'</ul></div>':"";
 pages.forEach(function(p,pi){var al=esc(g("alamat")).replace(/\n/g,"<br>");
 out+='<div class="pg"><div style="position:relative;display:flex;align-items:center;justify-content:center;min-height:'+(S.logo?56:30)+'px;margin-bottom:4px">'+(S.logo?'<img src="'+S.logo+'" style="position:absolute;left:0;top:0;max-height:50px;max-width:130px">':'')+'<h2 style="margin:0">'+esc(g("judul"))+'</h2></div><div style="font:800 12px DM Sans,Arial,sans-serif;margin-bottom:6px">'+esc(g("usaha"))+'</div><div class="hd"><div class="bx"><b>'+esc(g("nama"))+'</b><br>'+al+'</div><div class="bx"><table><tr><td>NO. REKENING</td><td>:</td><td>'+esc(g("norek"))+'</td></tr><tr><td>HALAMAN</td><td>:</td><td>'+(pi+1)+'/'+tot+'</td></tr><tr><td>PERIODE</td><td>:</td><td>'+esc(g("periode"))+'</td></tr><tr><td>MATA UANG</td><td>:</td><td>'+esc(g("mata"))+'</td></tr></table></div></div>'+cat+'<div class="th"><div>TANGGAL</div><div>KETERANGAN</div><div>CBG</div><div>MUTASI</div><div>SALDO</div></div>'+p.map(function(r){return r.h}).join("");
 if(pi<tot-1)out+='<div style="position:absolute;right:44px;bottom:26px;font-style:italic">Bersambung ke Halaman berikut</div>';
@@ -105,7 +105,7 @@ d.setFont("helvetica","bold");d.setFontSize(9);[["NO. REKENING",g("norek")],["HA
 var cl=g("catatan").trim().split("\n").filter(Boolean),oy=0;
 if(cl.length){d.setFont("helvetica","normal");d.setFontSize(7.5);var its=cl.map(function(l){return d.splitTextToSize("\u2022 "+l,240)}),hf=Math.ceil(its.length/2),cb=196;
 [[its.slice(0,hf),43],[its.slice(hf),305]].forEach(function(c){var yy=196;c[0].forEach(function(ls){ls.forEach(function(t){d.text(t,c[1],yy);yy+=9.5})});if(yy>cb)cb=yy});
-d.setFont("helvetica","bold");d.setFontSize(8);d.text("CATATAN:",43,184);var h=cb-172+2;d.roundedRect(33,172,529,h,6,6);oy=h+2}
+d.setFont("helvetica","normal");d.setFontSize(7.5);d.text("CATATAN:",43,184);var h=cb-172+2;d.roundedRect(33,172,529,h,6,6);oy=h+2}
 d.setFont("helvetica","bold");d.roundedRect(33,176+oy,529,22,6,6);d.setFontSize(10);d.text("TANGGAL",61,191+oy,{align:"center"});d.text("KETERANGAN",195,191+oy,{align:"center"});d.text("CBG",325,191+oy,{align:"center"});d.text("MUTASI",405,191+oy,{align:"center"});d.text("SALDO",508,191+oy,{align:"center"});
 d.setFont("helvetica","bold");d.setFontSize(9);var y=218+oy;
 p.forEach(function(r){d.text(r.d[0],40,y);d.text(r.d[1],95,y);(r.d[4]||"").split("\n").forEach(function(l,i){d.text(l,192,y+i*LH)});d.text(r.d[2],450,y,{align:"right"});d.text(r.d[3],555,y,{align:"right"});y+=r.l*LH+3});d.setLineWidth(1);[90,300,350,455].forEach(function(x){d.line(x,176+oy,x,198+oy)});
