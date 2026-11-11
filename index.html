@@ -57,6 +57,8 @@ button.p{background:var(--ac);border-color:var(--ac);color:#fff}
 <div id="list" style="margin-top:8px"></div>
 <div class="bar"><button class="p" onclick="add()">+ Tambah transaksi</button><button onclick="clr()">Kosongkan</button></div>
 <div class="note">Keterangan = judul transaksi (mis. TRSF E-BANKING DB). Rincian = baris di bawahnya (kode, nama, catatan). Saldo dihitung otomatis.</div></div>
+<div class="bar"><button class="p" onclick="simpanBulan()">Simpan dan lanjut ke bulan berikutnya</button><span id="sm" class="note"></span></div>
+<div class="card"><b>Arsip bulan tersimpan</b><div id="arsip" style="margin-top:8px"></div></div>
 <div class="bar"><button class="p" onclick="mkpdf()">Unduh PDF</button><button onclick="window.print()">Cetak</button><span id="st" class="note"></span></div>
 <div class="card" id="prevwrap"><div id="prev"></div></div>
 </div>
@@ -116,7 +118,20 @@ d.setFont("helvetica","normal");d.setFontSize(8);d.text("Dokumen internal, bukan
 var fn="laporan-mutasi-"+(g("periode")||"x").trim().replace(/\s+/g,"-")+".pdf",blob=d.output("blob"),dl=null;try{if(window.claude&&claude.use)dl=await claude.use("downloads")}catch(e){dl=null}if(!dl){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},3000);st.textContent="PDF diunduh.";return}
 try{
 await dl.save({filename:"laporan-mutasi-"+(g("periode")||"x").trim().replace(/\s+/g,"-")+".pdf",data:d.output("blob")});st.textContent="PDF tersimpan."}catch(e){st.textContent=(e&&e.code=="declined")?"Dibatalkan.":"Gagal: "+((e&&e.message)||e)}}
+var BLN=["JANUARI","FEBRUARI","MARET","APRIL","MEI","JUNI","JULI","AGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DESEMBER"];
+function nextPeriode(p){var m=String(p).trim().toUpperCase().match(/^([A-Z]+)\s+(\d{4})$/);if(!m)return null;var i=BLN.indexOf(m[1]);if(i<0)return null;i++;var y=+m[2];if(i>11){i=0;y++}return BLN[i]+" "+y}
+function simpanBulan(){sv();if(!M)return;var g=function(i){return document.getElementById(i).value};var akhir=Math.round(M.saldo*100)/100;
+var snap={periode:g("periode"),h:JSON.parse(JSON.stringify(S.h)),tx:JSON.parse(JSON.stringify(S.tx)),akhir:akhir};
+S.arsip=S.arsip||[];var ix=-1;S.arsip.forEach(function(a,i){if(a.periode==snap.periode)ix=i});if(ix>=0)S.arsip[ix]=snap;else S.arsip.push(snap);
+var np=nextPeriode(g("periode"));document.getElementById("awal").value=akhir;if(np)document.getElementById("periode").value=np;
+S.tx=[{t:"",k:"",j:"CR",n:"",r:""}];list();draw();arsipList();
+document.getElementById("sm").textContent="Tersimpan. Saldo awal bulan berikutnya: "+fmt(akhir)+(np?"":" (periode isi manual)")}
+function arsipList(){var a=S.arsip||[],h="";if(!a.length)h='<div class="note">Belum ada bulan yang disimpan.</div>';
+a.forEach(function(x,i){h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><div style="flex:1"><b>'+esc(x.periode||"(tanpa periode)")+'</b><div class="note">Saldo akhir '+fmt(+x.akhir||0)+'</div></div><button onclick="bukaArsip('+i+')">Buka</button><button onclick="hapusArsip('+i+')">Hapus</button></div>'});
+document.getElementById("arsip").innerHTML=h}
+function bukaArsip(i){var x=(S.arsip||[])[i];if(!x)return;ids.forEach(function(k){if(x.h[k]!=null)document.getElementById(k).value=x.h[k]});S.tx=JSON.parse(JSON.stringify(x.tx));list();draw()}
+function hapusArsip(i){(S.arsip||[]).splice(i,1);sv();arsipList()}
 function setLogo(f){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/im.width,120/im.height),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.logo=c.toDataURL("image/png");draw()};im.src=r.result};r.readAsDataURL(f)}
 function noLogo(){S.logo="";document.getElementById("lg").value="";draw()}
-ld();list();draw();
+ld();list();draw();arsipList();
 </script></body></html>
